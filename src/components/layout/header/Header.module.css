@@ -1,0 +1,8 @@
+.header {
+  background-color: hsl(212, 33%, 15%);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  height: 50px;
+  width: 100%;
+  align-items: center;
+}

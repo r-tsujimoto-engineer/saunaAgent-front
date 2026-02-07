@@ -1,41 +1,44 @@
 import { useEffect, useState } from "react";
 import liff from "@line/liff";
 import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import { Home } from "./pages/home/Home";
+import { History } from "./pages/history/History";
+import { Membership } from "./pages/membership/Membership";
+import { NearbySauna } from "./pages/nearbySauna/NearbySauna";
+import { Favorite } from "./pages/favorite/Favorite";
 
 function App() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-
   useEffect(() => {
-    liff
-      .init({
-        liffId: import.meta.env.VITE_LIFF_ID
-      })
-      .then(() => {
+    const initializeLiff = async () => {
+      console.log('LIFF initialization started...');
+      try {
+        await liff.init({
+          liffId: import.meta.env.VITE_LIFF_ID
+        });
+        console.log('LIFF initialization succeeded');
         setMessage("LIFF init succeeded.");
-      })
-      .catch((e: Error) => {
+      } catch (e) {
+        console.error('LIFF initialization failed:', e);
         setMessage("LIFF init failed.");
         setError(`${e}`);
-      });
-  });
+      }
+    };
+
+    initializeLiff();
+  }, []);
 
   return (
     <div className="App">
-      <h1>create-liff-app</h1>
-      {message && <p>{message}</p>}
-      {error && (
-        <p>
-          <code>{error}</code>
-        </p>
-      )}
-      <a
-        href="https://developers.line.biz/ja/docs/liff/"
-        target="_blank"
-        rel="noreferrer"
-      >
-        LIFF Documentation
-      </a>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/history" element={<History />} />
+        <Route path="/membership" element={<Membership />} />
+        <Route path="/nearbySauna" element={<NearbySauna />} />
+        <Route path="/favorite" element={<Favorite />} />
+      </Routes>
     </div>
   );
 }
